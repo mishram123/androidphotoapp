@@ -26,32 +26,32 @@
         android:padding="8dp">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/add_photo_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button 1" />
+            android:text="add photo" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/delete_photo_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button 2" />
+            android:text="delete photo" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/display_photo_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button 3" />
+            android:text="display photo" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/back_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button 4" />
+            android:text="go back" />
 
 
     </LinearLayout>

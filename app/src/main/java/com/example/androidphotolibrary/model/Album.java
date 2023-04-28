@@ -4,6 +4,7 @@ package com.example.androidphotolibrary.model;
  * @author Mannan Mishra
  */
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter;
  * Represents an album in the photo management system containing a name and list of photos
  * Album class provides methods to add and remove photos, and to find a photo by its filepath
  */
-public class Album {
+public class Album implements Serializable {
     /**
      * the name of the album
      */
@@ -26,6 +27,8 @@ public class Album {
      * number of photos in album
      */
     private int numPhotos;
+
+    public static final long serialVerisionUID = 42L;
 
     /**
      * Constructs a new album with the given name and an empty list of photos

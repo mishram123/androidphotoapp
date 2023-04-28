@@ -1,5 +1,6 @@
 package com.example.androidphotolibrary.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,9 @@ import java.time.format.DateTimeFormatter;
  * The Photo class represents a photo object in the photos app
  * Photo object contains file name, file path, caption, and photo date taken
  */
-public class Photo {
+public class Photo implements Serializable {
 
+    public static final long serialVersionUID = 42L;
     private String fileName;
     private String filePath;
     private String caption;
