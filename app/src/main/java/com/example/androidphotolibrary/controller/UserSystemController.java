@@ -4,6 +4,8 @@ import com.example.androidphotolibrary.model.*;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -49,11 +51,13 @@ public class UserSystemController extends AppCompatActivity{
     }
 
     User mainUser = new User("user");
+    private UserDatabaseHelper dbhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_system);
+
 
         albumListView = findViewById(R.id.album_list_view);
         selectedAlbumTextView = findViewById(R.id.selected_album_text_view);
