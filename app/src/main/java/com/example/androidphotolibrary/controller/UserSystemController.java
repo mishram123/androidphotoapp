@@ -23,6 +23,13 @@ import com.example.androidphotolibrary.R;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import android.content.SharedPreferences;
+
+
+
 public class UserSystemController extends AppCompatActivity{
 
     private ListView albumListView;
@@ -52,6 +59,43 @@ public class UserSystemController extends AppCompatActivity{
 
     User mainUser = new User("user");
     private UserDatabaseHelper dbhelper;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAlbumsFromSharedPreferences();
+        updateAlbumsList();
+    }
+
+    private void updateAlbumsList() {
+        albumsList.clear();
+        for (int i = 0; i < mainUser.getAlbums().size(); i++) {
+            albumsList.add(mainUser.getAlbums().get(i).getName());
+        }
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) albumListView.getAdapter();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void saveAlbumsToSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mainUser.getAlbums());
+        editor.putString("albums", json);
+        editor.apply();
+    }
+
+    private void loadAlbumsFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("albums", null);
+        Type type = new TypeToken<ArrayList<Album>>() {}.getType();
+        ArrayList<Album> loadedAlbums = gson.fromJson(json, type);
+
+        if (loadedAlbums != null) {
+            mainUser.setAlbums(loadedAlbums);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -179,10 +223,12 @@ public class UserSystemController extends AppCompatActivity{
             }
         });
 
+
+
         openAlbumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                saveAlbumsToSharedPreferences();
                 Intent intent = new Intent(UserSystemController.this, AlbumDisplayController.class);
                 startActivity(intent);
             }

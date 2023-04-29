@@ -41,6 +41,10 @@ public class User {
         return albums;
     }
 
+    public void setAlbums(ArrayList<Album> albums) {
+        this.albums = albums;
+    }
+
     /**
      * Adds the given album to the list of albums that belong to the User object
      * @param album the album to be added to the list of albums
