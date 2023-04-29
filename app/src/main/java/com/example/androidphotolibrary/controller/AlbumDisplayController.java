@@ -72,7 +72,7 @@ public class AlbumDisplayController extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
             }
