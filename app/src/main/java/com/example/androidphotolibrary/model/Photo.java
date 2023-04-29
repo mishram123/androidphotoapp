@@ -1,5 +1,8 @@
 package com.example.androidphotolibrary.model;
 
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +15,15 @@ import java.time.format.DateTimeFormatter;
  * The Photo class represents a photo object in the photos app
  * Photo object contains file name, file path, caption, and photo date taken
  */
-public class Photo {
+public class Photo implements Serializable {
 
+    public static final long serialVersionUID = 42L;
     private String fileName;
     private String filePath;
     private String caption;
     private LocalDateTime dateTaken;
     private List<Tag> tags;
+    private Bitmap bitmap;
 
     /**
      * Default constructor
@@ -30,12 +35,15 @@ public class Photo {
      * Constructs a Photo object with the specified file name, file path, and date taken.
      * @param fileName the name of the photo file
      * @param filePath the path to the photo file
-     * @param dateTaken the date the photo was taken
      */
-    public Photo(String fileName, String filePath, LocalDateTime dateTaken) {
+    public Photo(String fileName, String filePath, Bitmap bitmap) {
         this.fileName = fileName;
         this.filePath = filePath;
-        this.dateTaken = dateTaken;
+        this.tags = new ArrayList<>();
+        this.bitmap = bitmap;
+    }
+    public Photo(Bitmap bitmap){
+        this.bitmap = bitmap;
         this.tags = new ArrayList<>();
     }
 

@@ -3,6 +3,9 @@ package com.example.androidphotolibrary.controller;
 import com.example.androidphotolibrary.model.*;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -28,26 +31,47 @@ public class UserSystemController extends AppCompatActivity{
     private ArrayList<String> albumsList;
 
     private String selectedAlbum;
+    private Album selectedAlbumObject;
 
     public String getSelectedAlbum(){
         return selectedAlbum;
     }
 
+    public Album getSelectedAlbumObject(){
+        return selectedAlbumObject;
+    }
+
+    public void setSelectedAlbumObject(String album){
+        for(int i = 0; i<mainUser.getAlbums().size();i++){
+            if(album.equals(mainUser.getAlbums().get(i).getName())){
+                selectedAlbumObject = mainUser.getAlbums().get(i);
+                break;
+            }
+        }
+    }
+
     User mainUser = new User("user");
+    private UserDatabaseHelper dbhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_system);
 
+
         albumListView = findViewById(R.id.album_list_view);
         selectedAlbumTextView = findViewById(R.id.selected_album_text_view);
         createAlbumButton = findViewById(R.id.create_album_button);
         deleteAlbumButton = findViewById(R.id.delete_album_button);
         renameAlbumButton = findViewById(R.id.rename_album_button);
+        openAlbumButton = findViewById(R.id.open_album_button);
         searchPhotosButton = findViewById(R.id.search_photos_button);
 
         albumsList = new ArrayList<>();
+
+        for(int i = 0; i<mainUser.getAlbums().size(); i++){
+            albumsList.add(mainUser.getAlbums().get(i).getName());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
         albumListView.setAdapter(adapter);
@@ -152,6 +176,15 @@ public class UserSystemController extends AppCompatActivity{
 
                 builder.show();
 
+            }
+        });
+
+        openAlbumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(UserSystemController.this, AlbumDisplayController.class);
+                startActivity(intent);
             }
         });
 
