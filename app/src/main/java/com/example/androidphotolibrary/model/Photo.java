@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
+import android.net.Uri;
 
 /**
  * @author Soban Chaudhry
@@ -23,7 +24,10 @@ public class Photo implements Serializable {
     private String caption;
     private LocalDateTime dateTaken;
     private List<Tag> tags;
-    private Bitmap bitmap;
+
+    //private Bitmap bitmap;
+
+    private Uri imageUri;
 
     /**
      * Default constructor
@@ -36,14 +40,16 @@ public class Photo implements Serializable {
      * @param fileName the name of the photo file
      * @param filePath the path to the photo file
      */
-    public Photo(String fileName, String filePath, Bitmap bitmap) {
+    public Photo(String fileName, String filePath, Uri imageUri) {
         this.fileName = fileName;
         this.filePath = filePath;
         this.tags = new ArrayList<>();
-        this.bitmap = bitmap;
+        //this.bitmap = bitmap;
+        this.imageUri = imageUri;
     }
-    public Photo(Bitmap bitmap){
-        this.bitmap = bitmap;
+    public Photo(Uri imageUri){
+        //this.bitmap = bitmap;
+        this.imageUri = imageUri;
         this.tags = new ArrayList<>();
     }
 
@@ -60,6 +66,11 @@ public class Photo implements Serializable {
      */
     public String getFilePath() {
         return filePath;
+    }
+
+
+    public Uri getImageUri() {
+        return imageUri;
     }
 
     /**

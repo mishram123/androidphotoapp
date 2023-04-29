@@ -86,17 +86,18 @@ public class AlbumDisplayController extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             if (data.getData() != null) {
-                try {
+                //try {
                     Uri imageUri = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    imageList.add(new Photo(bitmap));
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    //imageList.add(new Photo(bitmap));
+                    imageList.add(new Photo(imageUri));
                     imageAdapter.notifyDataSetChanged();
                     Toast.makeText(AlbumDisplayController.this, "Photo added successfully", Toast.LENGTH_SHORT).show();
-                    finish();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AlbumDisplayController.this, "Failed to add photo", Toast.LENGTH_SHORT).show();
-                }
+                    //finish();
+                //} catch (IOException e) {
+                    //e.printStackTrace();
+                    //Toast.makeText(AlbumDisplayController.this, "Failed to add photo", Toast.LENGTH_SHORT).show();
+                //}
             }
         }
     }

@@ -53,8 +53,8 @@ public class ImageAdapter extends BaseAdapter{
             imageView = (ImageView) convertView;
         }
 
-        Uri imguri = Uri.parse(photosinAlbum.get(position).getFilePath());
-        imgview.setImageURI(imguri);
+        Uri imguri = photosinAlbum.get(position).getImageUri();
+        imageView.setImageURI(imguri);
         return imageView;
     }
 }
