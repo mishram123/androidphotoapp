@@ -28,17 +28,21 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import android.content.SharedPreferences;
 
+import android.content.Context;
 
+
+import android.widget.BaseAdapter;
 
 public class UserSystemController extends AppCompatActivity{
 
     private ListView albumListView;
     private TextView selectedAlbumTextView;
     private Button createAlbumButton, deleteAlbumButton, renameAlbumButton, openAlbumButton, searchPhotosButton;
-    private ArrayList<String> albumsList;
+    private static ArrayList<String> albumsList;
 
     private String selectedAlbum;
     private static Album selectedAlbumObject;
+
 
     public String getSelectedAlbum(){
         return selectedAlbum;
@@ -57,8 +61,14 @@ public class UserSystemController extends AppCompatActivity{
         }
     }
 
-    User mainUser = new User("user");
+    static User mainUser = new User("user");
     private UserDatabaseHelper dbhelper;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveAlbumsToSharedPreferences(this);
+    }
 
     @Override
     protected void onResume() {
@@ -74,21 +84,24 @@ public class UserSystemController extends AppCompatActivity{
         }
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) albumListView.getAdapter();
         adapter.notifyDataSetChanged();
+        //saveAlbumsToSharedPreferences();
     }
 
-    private void saveAlbumsToSharedPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+    public static void saveAlbumsToSharedPreferences(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(mainUser.getAlbums());
-        editor.putString("albums", json);
+        String json = gson.toJson(albumsList);
+        editor.putString("albumList", json);
         editor.apply();
     }
 
+
+
     private void loadAlbumsFromSharedPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("albums", null);
+        String json = sharedPreferences.getString("album", null);
         Type type = new TypeToken<ArrayList<Album>>() {}.getType();
         ArrayList<Album> loadedAlbums = gson.fromJson(json, type);
 
@@ -161,6 +174,9 @@ public class UserSystemController extends AppCompatActivity{
                 });
 
                 builder.show();
+
+                saveAlbumsToSharedPreferences(UserSystemController.this);
+                updateAlbumsList();
             }
         });
 
@@ -178,6 +194,9 @@ public class UserSystemController extends AppCompatActivity{
                     albumsList.remove(deletingAlbum);
                     adapter.notifyDataSetChanged();
                 }
+
+                saveAlbumsToSharedPreferences(UserSystemController.this);
+                updateAlbumsList();
             }
         });
 
@@ -228,13 +247,14 @@ public class UserSystemController extends AppCompatActivity{
         openAlbumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAlbumsToSharedPreferences();
+                saveAlbumsToSharedPreferences(UserSystemController.this);
                 for(int i = 0; i<mainUser.getAlbums().size(); i++){
                     if(selectedAlbum.equals(mainUser.getAlbums().get(i).getName())){
                         selectedAlbumObject = mainUser.getAlbums().get(i);
                         break;
                     }
                 }
+                AlbumDisplayController.currentAlbum = selectedAlbumObject;
                 Intent intent = new Intent(UserSystemController.this, AlbumDisplayController.class);
                 startActivity(intent);
             }

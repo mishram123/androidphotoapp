@@ -18,6 +18,15 @@ import java.util.List;
 
 import com.example.androidphotolibrary.R;
 import com.example.androidphotolibrary.model.*;
+import android.widget.BaseAdapter;
+
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import java.io.File;
+
 public class AlbumDisplayController extends AppCompatActivity{
     private GridView gridView;
     private List<Photo> imageList;
@@ -25,6 +34,8 @@ public class AlbumDisplayController extends AppCompatActivity{
     private Album albumToView = UserSystemController.getSelectedAlbumObject();
 
     public static Photo selectedPhoto;
+
+    public static Album currentAlbum;
 
     public static Photo getSelectedPhoto(){
         return selectedPhoto;
@@ -35,16 +46,19 @@ public class AlbumDisplayController extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.album_display);
 
+        currentAlbum = UserSystemController.getSelectedAlbumObject();
+
         imageList = new ArrayList<>();
+        imageList = currentAlbum.getPhotos();
 
         gridView = findViewById(R.id.image_gridview);
         imageAdapter = new ImageAdapter(AlbumDisplayController.this, imageList);
         gridView.setAdapter(imageAdapter);
 
-        List<Photo> albumPhotos = albumToView.getPhotos();
-        if(albumPhotos != null){
-            imageList.addAll(albumPhotos);
-        }
+//        List<Photo> albumPhotos = albumToView.getPhotos();
+//        if(albumPhotos != null){
+//            imageList.addAll(albumPhotos);
+//        }
         imageAdapter.notifyDataSetChanged();
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,9 +121,12 @@ public class AlbumDisplayController extends AppCompatActivity{
                     Uri imageUri = data.getData();
                     //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                     //imageList.add(new Photo(bitmap));
-                    imageList.add(new Photo(imageUri));
+                    Photo photo = new Photo(imageUri);
+                    //imageList.add(photo);
+                    currentAlbum.addPhoto(photo);
                     imageAdapter.notifyDataSetChanged();
                     Toast.makeText(AlbumDisplayController.this, "Photo added successfully", Toast.LENGTH_SHORT).show();
+                    UserSystemController.saveAlbumsToSharedPreferences(AlbumDisplayController.this);
                     //finish();
                 //} catch (IOException e) {
                     //e.printStackTrace();
@@ -118,5 +135,5 @@ public class AlbumDisplayController extends AppCompatActivity{
             }
         }
     }
-    
+
 }
