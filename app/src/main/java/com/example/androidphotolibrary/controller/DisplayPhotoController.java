@@ -3,20 +3,31 @@ import com.example.androidphotolibrary.model.*;
 import com.example.androidphotolibrary.R;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.net.Uri;
+import android.widget.Toast;
+import android.provider.MediaStore;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+
 
 import androidx.appcompat.app.AppCompatActivity;
 public class DisplayPhotoController extends AppCompatActivity{
     private ImageView photoImageView;
     private Button previousPhotoButton, nextPhotoButton, addTagButton, deleteTagButton, backButton;
+    private Photo photoToDisplay = AlbumDisplayController.getSelectedPhoto();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_display);
+
+
 
         // Find views by their IDs
         photoImageView = findViewById(R.id.photo_image_view);
@@ -25,6 +36,19 @@ public class DisplayPhotoController extends AppCompatActivity{
         addTagButton = findViewById(R.id.add_tag_button);
         deleteTagButton = findViewById(R.id.delete_tag_button);
         backButton = findViewById(R.id.back_button);
+
+        Uri imageUri = photoToDisplay.getImageUri();
+
+        try {
+            Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            photoImageView.setImageBitmap(photo);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
+        }
 
         // Set click listeners for buttons
         previousPhotoButton.setOnClickListener(new View.OnClickListener() {
