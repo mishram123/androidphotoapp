@@ -73,6 +73,8 @@ public class AlbumDisplayController extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(AlbumDisplayController.this, DisplayPhotoController.class);
+                startActivity(intent);
             }
         });
 
