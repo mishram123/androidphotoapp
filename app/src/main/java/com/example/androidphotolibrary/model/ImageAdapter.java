@@ -15,6 +15,7 @@ import com.example.androidphotolibrary.controller.AlbumDisplayController;
 
 import java.io.File;
 import java.util.*;
+import com.bumptech.glide.Glide;
 
 public class ImageAdapter extends BaseAdapter{
     private Context mContext;
@@ -25,6 +26,13 @@ public class ImageAdapter extends BaseAdapter{
     public ImageAdapter(Context c, List<Photo> photosinAlbum){
         mContext = c;
         this.photosinAlbum = photosinAlbum;
+    }
+
+    public void loadImageIntoImageView(Photo photo, ImageView imageView) {
+        Uri imageUri = photo.getImageUri();
+        Glide.with(imageView.getContext())
+                .load(imageUri)
+                .into(imageView);
     }
 
     public int getCount(){

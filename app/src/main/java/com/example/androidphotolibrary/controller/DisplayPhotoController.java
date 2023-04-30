@@ -13,6 +13,14 @@ import android.widget.Toast;
 import android.provider.MediaStore;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import com.bumptech.glide.Glide;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
+import android.util.Log;
+import java.util.ArrayList;
+
 
 
 
@@ -37,18 +45,40 @@ public class DisplayPhotoController extends AppCompatActivity{
         deleteTagButton = findViewById(R.id.delete_tag_button);
         backButton = findViewById(R.id.back_button);
 
-        Uri imageUri = photoToDisplay.getImageUri();
+//        Uri imageUri = photoToDisplay.getImageUri();
+//        photoImageView.setImageURI(imageUri);
 
-        try {
-            Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            photoImageView.setImageBitmap(photo);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
-        }
+        ImageAdapter imageAdapter = new ImageAdapter(DisplayPhotoController.this, new ArrayList<>());
+        imageAdapter.loadImageIntoImageView(photoToDisplay, photoImageView);
+
+//        Glide.with(this)
+//                .load(imageUri)
+//                .into(photoImageView);
+
+//        Log.d("DisplayPhotoController", "Image Uri: " + imageUri);
+
+//        try {
+//            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//            Bitmap photo = BitmapFactory.decodeStream(inputStream);
+//            photoImageView.setImageBitmap(photo);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
+//        }
+
+//        try {
+//            Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//            photoImageView.setImageBitmap(photo);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
+//        }
 
         // Set click listeners for buttons
         previousPhotoButton.setOnClickListener(new View.OnClickListener() {
