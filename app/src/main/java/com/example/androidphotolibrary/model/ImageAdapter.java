@@ -20,6 +20,8 @@ public class ImageAdapter extends BaseAdapter{
     private Context mContext;
     private List<Photo> photosinAlbum;
 
+
+
     public ImageAdapter(Context c, List<Photo> photosinAlbum){
         mContext = c;
         this.photosinAlbum = photosinAlbum;
@@ -44,7 +46,7 @@ public class ImageAdapter extends BaseAdapter{
 
         if(convertView == null){
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
             //imgview = imageView.findViewById();

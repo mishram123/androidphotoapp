@@ -38,13 +38,13 @@ public class UserSystemController extends AppCompatActivity{
     private ArrayList<String> albumsList;
 
     private String selectedAlbum;
-    private Album selectedAlbumObject;
+    private static Album selectedAlbumObject;
 
     public String getSelectedAlbum(){
         return selectedAlbum;
     }
 
-    public Album getSelectedAlbumObject(){
+    public static Album getSelectedAlbumObject(){
         return selectedAlbumObject;
     }
 
@@ -229,6 +229,12 @@ public class UserSystemController extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 saveAlbumsToSharedPreferences();
+                for(int i = 0; i<mainUser.getAlbums().size(); i++){
+                    if(selectedAlbum.equals(mainUser.getAlbums().get(i).getName())){
+                        selectedAlbumObject = mainUser.getAlbums().get(i);
+                        break;
+                    }
+                }
                 Intent intent = new Intent(UserSystemController.this, AlbumDisplayController.class);
                 startActivity(intent);
             }

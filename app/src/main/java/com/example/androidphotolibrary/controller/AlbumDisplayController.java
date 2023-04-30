@@ -22,6 +22,13 @@ public class AlbumDisplayController extends AppCompatActivity{
     private GridView gridView;
     private List<Photo> imageList;
     private ImageAdapter imageAdapter;
+    private Album albumToView = UserSystemController.getSelectedAlbumObject();
+
+    public static Photo selectedPhoto;
+
+    public static Photo getSelectedPhoto(){
+        return selectedPhoto;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,10 +41,16 @@ public class AlbumDisplayController extends AppCompatActivity{
         imageAdapter = new ImageAdapter(AlbumDisplayController.this, imageList);
         gridView.setAdapter(imageAdapter);
 
+        List<Photo> albumPhotos = albumToView.getPhotos();
+        if(albumPhotos != null){
+            imageList.addAll(albumPhotos);
+        }
+        imageAdapter.notifyDataSetChanged();
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                selectedPhoto = (Photo) parent.getItemAtPosition(position);
             }
         });
 
@@ -50,7 +63,9 @@ public class AlbumDisplayController extends AppCompatActivity{
         delete_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                UserSystemController.getSelectedAlbumObject().deletePhoto(selectedPhoto);
+                imageList.remove(selectedPhoto);
+                imageAdapter.notifyDataSetChanged();
             }
         });
 
