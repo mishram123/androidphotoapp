@@ -5,7 +5,9 @@ import com.example.androidphotolibrary.model.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +27,17 @@ public class SearchPhotoController extends AppCompatActivity{
     private Spinner tagTypeSpinner;
     private EditText tagValueEditText;
     private ListView tagsListView;
+
+    private ArrayList<String> tagsList = new ArrayList<>();
+
+    private Photo searchedPhoto;
+
+    private String selectedTag;
+
+    public String getSelectedTag(){
+        return selectedTag;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +47,50 @@ public class SearchPhotoController extends AppCompatActivity{
         tagValueEditText = findViewById(R.id.tagValueEditText);
         tagsListView = findViewById(R.id.tagsListView);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource(this,
                 R.array.tag_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tagTypeSpinner.setAdapter(adapter);
+        spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tagTypeSpinner.setAdapter(spinneradapter);
+
+        for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size();i++){
+            for(int j = 0; j<UserSystemController.getMainUser().getAlbums().get(i).getNumPhotos();j++){
+                for(int k=0; k<UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().size(); i++){
+                    tagsList.add(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k).getKey() + " " + UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k).getValue());
+                }
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagsList);
+        tagsListView.setAdapter(adapter);
+
+        tagValueEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Filter the data based on the search text
+                ArrayList<String> filteredData = new ArrayList<>();
+                for (String item : tagsList) {
+                    if (item.toLowerCase().startsWith(s.toString().toLowerCase())) {
+                        filteredData.add(item);
+                    }
+                }
+                // Update the list view with the filtered data
+                adapter.clear();
+                adapter.addAll(filteredData);
+            }
+        });
+        tagsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String Tag = (String) parent.getItemAtPosition(position);
+                // TODO: Handle the click event for the selected tag
+                selectedTag = Tag;
+            }
+        });
 
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -49,10 +102,39 @@ public class SearchPhotoController extends AppCompatActivity{
         });
 
         Button openPhotoButton = findViewById(R.id.openPhotoButton);
+
+
         openPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: Open the photo
+                String Tag = selectedTag;
+                String[] parts = Tag.split(" ");
+                Tag tagtoSearch = new Tag(parts[0], parts[1]);
+
+                if(Tag!=null){
+                    boolean found = false;
+                    for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size();i++){
+                        for(int j = 0; j<UserSystemController.getMainUser().getAlbums().get(i).getNumPhotos();j++){
+                            for(int k=0; k<UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().size(); i++){
+                                if(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).tagEquals(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k), tagtoSearch) == true){
+                                    found = true;
+                                    searchedPhoto = UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j);
+                                    AlbumDisplayController.setSelectedPhoto(searchedPhoto);
+                                    break;
+                                }
+                            }
+                            if(found){
+                                break;
+                            }
+                        }
+                        if(found){
+                            break;
+                        }
+                    }
+                }
+                Intent intent = new Intent(SearchPhotoController.this, DisplayPhotoController.class);
+                startActivity(intent);
             }
         });
     }

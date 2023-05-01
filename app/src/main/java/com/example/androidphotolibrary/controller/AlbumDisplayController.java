@@ -40,6 +40,9 @@ public class AlbumDisplayController extends AppCompatActivity{
     public static Photo getSelectedPhoto(){
         return selectedPhoto;
     }
+    public static void setSelectedPhoto(Photo photo){
+        selectedPhoto = photo;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
