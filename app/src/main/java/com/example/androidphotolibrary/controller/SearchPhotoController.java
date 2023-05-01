@@ -141,7 +141,7 @@ public class SearchPhotoController extends AppCompatActivity{
                         }
                     }
                 }
-                Intent intent = new Intent(SearchPhotoController.this, DisplayPhotoController.class);
+                Intent intent = new Intent(SearchPhotoController.this, SearchResultsController.class);
                 startActivity(intent);
             }
         });
