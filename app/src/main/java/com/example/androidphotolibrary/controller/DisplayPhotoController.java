@@ -61,7 +61,7 @@ public class DisplayPhotoController extends AppCompatActivity{
             tagsList.add(tag);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagsList);
 
 
 
@@ -186,8 +186,8 @@ public class DisplayPhotoController extends AppCompatActivity{
 
                         tagsList.add(tagToDisplay);
                         ArrayAdapter<String> adapter = (ArrayAdapter<String>) tagListView.getAdapter();
-                        adapter.clear();
-                        adapter.addAll(tagsList);
+                        //adapter.clear();
+                        //adapter.addAll(tagToDisplay);
                         adapter.notifyDataSetChanged();
 
 
@@ -253,6 +253,17 @@ public class DisplayPhotoController extends AppCompatActivity{
         Glide.with(this)
                 .load(imageUri)
                 .into(photoImageView);
+        updateTagsList();
+    }
+
+    private void updateTagsList() {
+        tagsList.clear();
+        for (int i = 0; i < photoToDisplay.getTags().size(); i++) {
+            String tag = photoToDisplay.getTags().get(i).getKey() + " " + photoToDisplay.getTags().get(i).getValue();
+            tagsList.add(tag);
+        }
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) tagListView.getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
 
