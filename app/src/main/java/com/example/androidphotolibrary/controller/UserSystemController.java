@@ -265,7 +265,8 @@ public class UserSystemController extends AppCompatActivity{
         searchPhotosButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                Intent intent = new Intent(UserSystemController.this, SearchPhotoController.class);
+                startActivity(intent);
             }
         });
     }
