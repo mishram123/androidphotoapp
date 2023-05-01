@@ -46,6 +46,12 @@
             android:label="@string/app_name">
 
         </activity>
+        <activity
+            android:name=".controller.SearchResultsController"
+            android:exported="true"
+            android:label="@string/app_name">
+
+        </activity>
 
     </application>
 
