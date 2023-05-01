@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.net.Uri;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.provider.MediaStore;
 import java.io.FileNotFoundException;
@@ -26,8 +27,10 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 public class DisplayPhotoController extends AppCompatActivity{
     private ImageView photoImageView;
-    private Button previousPhotoButton, nextPhotoButton, addTagButton, deleteTagButton, backButton;
+    private Button previousPhotoButton, nextPhotoButton, addTagButton, deleteTagButton, backButton, movePhotoButton;
     private Photo photoToDisplay = AlbumDisplayController.getSelectedPhoto();
+
+    private ListView tagListView;
 
     private int currentPhotoIndex;
 
@@ -50,6 +53,8 @@ public class DisplayPhotoController extends AppCompatActivity{
         addTagButton = findViewById(R.id.add_tag_button);
         deleteTagButton = findViewById(R.id.delete_tag_button);
         backButton = findViewById(R.id.back_button);
+        movePhotoButton = findViewById(R.id.move_photo_button);
+        tagListView = findViewById(R.id.tag_list_view);
 
         Uri imageUri = photoToDisplay.getImageUri();
         photoImageView.setImageURI(imageUri);
@@ -135,6 +140,12 @@ public class DisplayPhotoController extends AppCompatActivity{
                 // Handle back button click
                 Intent intent = new Intent(DisplayPhotoController.this, AlbumDisplayController.class);
                 startActivity(intent);
+            }
+        });
+        movePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
