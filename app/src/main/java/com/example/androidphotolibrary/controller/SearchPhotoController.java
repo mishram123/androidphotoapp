@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidphotolibrary.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
 public class SearchPhotoController extends AppCompatActivity{
     private Spinner tagTypeSpinner;
     private EditText tagValueEditText;
@@ -52,10 +54,16 @@ public class SearchPhotoController extends AppCompatActivity{
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tagTypeSpinner.setAdapter(spinneradapter);
 
-        for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size();i++){
-            for(int j = 0; j<UserSystemController.getMainUser().getAlbums().get(i).getNumPhotos();j++){
-                for(int k=0; k<UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().size(); i++){
-                    tagsList.add(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k).getKey() + " " + UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k).getValue());
+        User user = UserSystemController.getMainUser();
+        List<Album> albums = user.getAlbums();
+        for (int i = 0; i < albums.size(); i++) {
+            Album album = albums.get(i);
+            List<Photo> photos = album.getPhotos();
+            for (int j = 0; j < photos.size(); j++) {
+                Photo photo = photos.get(j);
+                List<Tag> tags = photo.getTags();
+                for (int k = 0; k < tags.size(); k++) {
+                    tagsList.add(tags.get(k).getKey() + " " + tags.get(k).getValue());
                 }
             }
         }
@@ -109,28 +117,24 @@ public class SearchPhotoController extends AppCompatActivity{
             public void onClick(View v) {
                 // TODO: Open the photo
                 String Tag = selectedTag;
-                String[] parts = Tag.split(" ");
-                Tag tagtoSearch = new Tag(parts[0], parts[1]);
+
 
                 if(Tag!=null){
-                    boolean found = false;
+                    String[] parts = Tag.split(" ");
+                    Tag tagtoSearch = new Tag(parts[0], parts[1]);
+                    outerloop:
                     for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size();i++){
                         for(int j = 0; j<UserSystemController.getMainUser().getAlbums().get(i).getNumPhotos();j++){
                             for(int k=0; k<UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().size(); i++){
                                 if(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).tagEquals(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k), tagtoSearch) == true){
-                                    found = true;
                                     searchedPhoto = UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j);
                                     AlbumDisplayController.setSelectedPhoto(searchedPhoto);
-                                    break;
+                                    break outerloop;
                                 }
                             }
-                            if(found){
-                                break;
-                            }
+
                         }
-                        if(found){
-                            break;
-                        }
+
                     }
                 }
                 Intent intent = new Intent(SearchPhotoController.this, DisplayPhotoController.class);
