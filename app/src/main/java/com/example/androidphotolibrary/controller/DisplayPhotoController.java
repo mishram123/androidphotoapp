@@ -20,8 +20,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
 import android.util.Log;
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +29,17 @@ public class DisplayPhotoController extends AppCompatActivity{
     private Button previousPhotoButton, nextPhotoButton, addTagButton, deleteTagButton, backButton;
     private Photo photoToDisplay = AlbumDisplayController.getSelectedPhoto();
 
+    private int currentPhotoIndex;
+
+    List<Photo> imageList = AlbumDisplayController.imageList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_display);
+
+//        List<Photo> imageList = AlbumDisplayController.imageList;
+        currentPhotoIndex = imageList.indexOf(photoToDisplay);
 
 
 
@@ -45,15 +51,17 @@ public class DisplayPhotoController extends AppCompatActivity{
         deleteTagButton = findViewById(R.id.delete_tag_button);
         backButton = findViewById(R.id.back_button);
 
-//        Uri imageUri = photoToDisplay.getImageUri();
-//        photoImageView.setImageURI(imageUri);
+        Uri imageUri = photoToDisplay.getImageUri();
+        photoImageView.setImageURI(imageUri);
 
-        ImageAdapter imageAdapter = new ImageAdapter(DisplayPhotoController.this, new ArrayList<>());
-        imageAdapter.loadImageIntoImageView(photoToDisplay, photoImageView);
+//        ImageAdapter imageAdapter = new ImageAdapter(DisplayPhotoController.this, new ArrayList<>());
+//        imageAdapter.loadImageIntoImageView(photoToDisplay, photoImageView);
 
-//        Glide.with(this)
-//                .load(imageUri)
-//                .into(photoImageView);
+        Glide.with(this)
+                .load(imageUri)
+                .into(photoImageView);
+
+
 
 //        Log.d("DisplayPhotoController", "Image Uri: " + imageUri);
 
@@ -85,6 +93,12 @@ public class DisplayPhotoController extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // Handle previous photo button click
+                if (currentPhotoIndex > 0) {
+                    currentPhotoIndex--;
+                    updateDisplayedPhoto();
+                } else {
+                    Toast.makeText(DisplayPhotoController.this, "No previous photo", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -92,6 +106,12 @@ public class DisplayPhotoController extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // Handle next photo button click
+                if (currentPhotoIndex < imageList.size() - 1) {
+                    currentPhotoIndex++;
+                    updateDisplayedPhoto();
+                } else {
+                    Toast.makeText(DisplayPhotoController.this, "No next photo", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -118,4 +138,14 @@ public class DisplayPhotoController extends AppCompatActivity{
             }
         });
     }
+
+    private void updateDisplayedPhoto() {
+        photoToDisplay = imageList.get(currentPhotoIndex);
+        Uri imageUri = photoToDisplay.getImageUri();
+        Glide.with(this)
+                .load(imageUri)
+                .into(photoImageView);
+    }
+
+
 }

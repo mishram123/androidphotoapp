@@ -29,7 +29,7 @@ import java.io.File;
 
 public class AlbumDisplayController extends AppCompatActivity{
     private GridView gridView;
-    private List<Photo> imageList;
+    public static List<Photo> imageList;
     private ImageAdapter imageAdapter;
     private Album albumToView = UserSystemController.getSelectedAlbumObject();
 
