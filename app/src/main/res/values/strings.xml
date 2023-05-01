@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">android Photo Library</string>
+    <string name="tag_type_prompt">Select tag type:</string>
+    <string name="tag_value_hint">Enter tag value:</string>
 </resources>
