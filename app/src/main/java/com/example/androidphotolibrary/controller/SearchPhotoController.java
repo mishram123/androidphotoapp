@@ -122,19 +122,23 @@ public class SearchPhotoController extends AppCompatActivity{
                 if(Tag!=null){
                     String[] parts = Tag.split(" ");
                     Tag tagtoSearch = new Tag(parts[0], parts[1]);
+                    User user1 = UserSystemController.getMainUser();
+                    List<Album> albums1 = user.getAlbums();
                     outerloop:
-                    for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size();i++){
-                        for(int j = 0; j<UserSystemController.getMainUser().getAlbums().get(i).getNumPhotos();j++){
-                            for(int k=0; k<UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().size(); i++){
-                                if(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).tagEquals(UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j).getTags().get(k), tagtoSearch) == true){
-                                    searchedPhoto = UserSystemController.getMainUser().getAlbums().get(i).getPhotos().get(j);
+                    for(int i = 0; i<albums1.size();i++){
+                        Album album1 = albums1.get(i);
+                        List<Photo> photos1 = album1.getPhotos();
+                        for(int j = 0; j<photos1.size();j++){
+                            Photo photo1 = photos1.get(j);
+                            List<Tag> tags1 = photo1.getTags();
+                            for(int k=0; k<tags1.size(); i++){
+                                if(photo1.tagEquals(tags1.get(k), tagtoSearch) == true){
+                                    searchedPhoto = photo1;
                                     AlbumDisplayController.setSelectedPhoto(searchedPhoto);
                                     break outerloop;
                                 }
                             }
-
                         }
-
                     }
                 }
                 Intent intent = new Intent(SearchPhotoController.this, DisplayPhotoController.class);
