@@ -94,6 +94,7 @@ public class DisplayPhotoController extends AppCompatActivity{
 
 
 
+
 //        Log.d("DisplayPhotoController", "Image Uri: " + imageUri);
 
 //        try {
@@ -188,6 +189,7 @@ public class DisplayPhotoController extends AppCompatActivity{
                         adapter.clear();
                         adapter.addAll(tagsList);
                         adapter.notifyDataSetChanged();
+
 
                     }
                 });

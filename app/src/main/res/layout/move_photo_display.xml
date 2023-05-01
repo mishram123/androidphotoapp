@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/album_list_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/selected_album_text_view2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected item will appear here"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp" />
+
+    <Button
+        android:id="@+id/move_to_album_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move Photo"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/selected_album_text_view2"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/home_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/move_to_album_button"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>
