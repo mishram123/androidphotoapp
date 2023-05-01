@@ -2,13 +2,18 @@ package com.example.androidphotolibrary.controller;
 import com.example.androidphotolibrary.model.*;
 import com.example.androidphotolibrary.R;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.net.Uri;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.provider.MediaStore;
@@ -24,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 public class DisplayPhotoController extends AppCompatActivity{
     private ImageView photoImageView;
@@ -34,6 +40,10 @@ public class DisplayPhotoController extends AppCompatActivity{
 
     private int currentPhotoIndex;
 
+    private ArrayList<String> tagsList;
+
+    private String selectedTag;
+
     List<Photo> imageList = AlbumDisplayController.imageList;
 
     @Override
@@ -43,6 +53,15 @@ public class DisplayPhotoController extends AppCompatActivity{
 
 //        List<Photo> imageList = AlbumDisplayController.imageList;
         currentPhotoIndex = imageList.indexOf(photoToDisplay);
+
+        tagsList = new ArrayList<>();
+
+        for(int i = 0; i< photoToDisplay.getTags().size(); i++){
+            String tag = photoToDisplay.getTags().get(i).getKey() + " " + photoToDisplay.getTags().get(i).getValue();
+            tagsList.add(tag);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
 
 
@@ -55,6 +74,7 @@ public class DisplayPhotoController extends AppCompatActivity{
         backButton = findViewById(R.id.back_button);
         movePhotoButton = findViewById(R.id.move_photo_button);
         tagListView = findViewById(R.id.tag_list_view);
+        tagListView.setAdapter(adapter);
 
         Uri imageUri = photoToDisplay.getImageUri();
         photoImageView.setImageURI(imageUri);
@@ -65,6 +85,12 @@ public class DisplayPhotoController extends AppCompatActivity{
         Glide.with(this)
                 .load(imageUri)
                 .into(photoImageView);
+
+
+        tagListView.setBackgroundColor(getResources().getColor(android.R.color.white));
+        tagListView.setVerticalScrollBarEnabled(true);
+
+
 
 
 
@@ -94,6 +120,15 @@ public class DisplayPhotoController extends AppCompatActivity{
 //        }
 
         // Set click listeners for buttons
+        tagListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedTag2 = (String) adapterView.getItemAtPosition(i);
+                // Do something with the selected tag
+                selectedTag = selectedTag2;
+            }
+        });
+
         previousPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +159,46 @@ public class DisplayPhotoController extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // Handle add tag button click
+                AlertDialog.Builder builder = new AlertDialog.Builder(DisplayPhotoController.this);
+                builder.setTitle("Add Tag");
+
+                // Create the input fields for person and location
+                final EditText personEditText = new EditText(DisplayPhotoController.this);
+                personEditText.setHint("Person");
+                final EditText locationEditText = new EditText(DisplayPhotoController.this);
+                locationEditText.setHint("Location");
+
+                // Add the input fields to the AlertDialog
+                LinearLayout layout = new LinearLayout(DisplayPhotoController.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.addView(personEditText);
+                layout.addView(locationEditText);
+                builder.setView(layout);
+
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String person = personEditText.getText().toString();
+                        String location = locationEditText.getText().toString();
+                        photoToDisplay.addTag(person, location);
+                        String tagToDisplay = person + " " + location;
+
+                        tagsList.add(tagToDisplay);
+                        ArrayAdapter<String> adapter = (ArrayAdapter<String>) tagListView.getAdapter();
+                        adapter.clear();
+                        adapter.addAll(tagsList);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -131,6 +206,24 @@ public class DisplayPhotoController extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // Handle delete tag button click
+                String deletingTag = selectedTag;
+                String[] parts = deletingTag.split(" ");
+                Tag tagtoDelete = new Tag(parts[0], parts[1]);
+
+                if (deletingTag!= null){
+                    for(int i = 0; i<photoToDisplay.getTags().size(); i++){
+                        if(photoToDisplay.tagEquals(tagtoDelete, photoToDisplay.getTags().get(i))){
+                            photoToDisplay.removeTag(tagtoDelete);
+                            break;
+                        }
+                    }
+                    tagsList.remove(deletingTag);
+                    ArrayAdapter<String> adapter = (ArrayAdapter<String>) tagListView.getAdapter();
+                    adapter.clear();
+                    adapter.addAll(tagsList);
+                    adapter.notifyDataSetChanged();
+                }
+
             }
         });
 
