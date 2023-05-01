@@ -241,6 +241,8 @@ public class DisplayPhotoController extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(DisplayPhotoController.this, MovePhotoController.class);
+                startActivity(intent);
             }
         });
     }
