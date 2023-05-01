@@ -59,7 +59,11 @@ public class UserSystemController extends AppCompatActivity{
         }
     }
 
-    static User mainUser = new User("user");
+    public static User mainUser = new User("user");
+
+    public static User getMainUser(){
+        return mainUser;
+    }
 
 
     @Override

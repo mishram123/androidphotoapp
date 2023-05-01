@@ -24,6 +24,8 @@ import android.content.Context;
 
 
 import android.widget.BaseAdapter;
+import android.widget.Toast;
+
 public class MovePhotoController extends AppCompatActivity{
     private ListView albumListView;
     private TextView selectedAlbumTextView;
@@ -33,6 +35,9 @@ public class MovePhotoController extends AppCompatActivity{
     public String getSelectedAlbum(){
         return selectedAlbum;
     }
+
+    private Photo photoToMove = AlbumDisplayController.getSelectedPhoto();
+    private Album originalAlbum = UserSystemController.getSelectedAlbumObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +49,49 @@ public class MovePhotoController extends AppCompatActivity{
         movePhotoButton = findViewById(R.id.move_to_album_button);
         homeButton = findViewById(R.id.home_button);
 
+        albumslist = new ArrayList<>();
+
+        for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size(); i++){
+            albumslist.add(UserSystemController.getMainUser().getAlbums().get(i).getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumslist);
+        albumListView.setAdapter(adapter);
+        albumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedAlbum = albumslist.get(position);
+                selectedAlbumTextView.setText("Selected Item: " + selectedAlbum);
+
+            }
+        });
+
         movePhotoButton.setOnClickListener(v -> {
             // Handle the Move Photo button click
+            if(getSelectedAlbum().equals(originalAlbum.getName())){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Alert");
+                builder.setMessage("Cannot move to same album");
+                builder.setPositiveButton("OK", null);
+                AlertDialog alert = builder.create();
+                alert.show();
+            }else{
+                for(int i = 0; i<UserSystemController.getMainUser().getAlbums().size(); i++){
+                    if(selectedAlbum.equals(UserSystemController.getMainUser().getAlbums().get(i).getName())){
+                        UserSystemController.getMainUser().getAlbums().get(i).addPhoto(photoToMove);
+                        break;
+                    }
+                }
+                originalAlbum.deletePhoto(photoToMove);
+                Toast.makeText(MovePhotoController.this, "Photo moved successfully", Toast.LENGTH_SHORT).show();
+
+            }
         });
 
         homeButton.setOnClickListener(v -> {
             // Handle the Home button click
+            Intent intent = new Intent(MovePhotoController.this, UserSystemController.class);
+            startActivity(intent);
         });
     }
 
