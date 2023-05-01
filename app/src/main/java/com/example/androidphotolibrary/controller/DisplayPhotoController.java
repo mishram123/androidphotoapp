@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.net.Uri;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.provider.MediaStore;
 import java.io.FileNotFoundException;
@@ -164,25 +165,29 @@ public class DisplayPhotoController extends AppCompatActivity{
                 builder.setTitle("Add Tag");
 
                 // Create the input fields for person and location
-                final EditText personEditText = new EditText(DisplayPhotoController.this);
-                personEditText.setHint("Person");
-                final EditText locationEditText = new EditText(DisplayPhotoController.this);
-                locationEditText.setHint("Location");
+                final EditText tagValueEditText = new EditText(DisplayPhotoController.this);
+                tagValueEditText.setHint("Person or Location");
+
+                final Spinner tagTypeSpinner = new Spinner(DisplayPhotoController.this);
+                String[] tagTypes = new String[]{"Person", "Location"};
+                ArrayAdapter<String> tagTypeAdapter = new ArrayAdapter<>(DisplayPhotoController.this, android.R.layout.simple_spinner_dropdown_item, tagTypes);
+                tagTypeSpinner.setAdapter(tagTypeAdapter);
+
 
                 // Add the input fields to the AlertDialog
                 LinearLayout layout = new LinearLayout(DisplayPhotoController.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
-                layout.addView(personEditText);
-                layout.addView(locationEditText);
+                layout.addView(tagTypeSpinner);
+                layout.addView(tagValueEditText);
                 builder.setView(layout);
 
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String person = personEditText.getText().toString();
-                        String location = locationEditText.getText().toString();
-                        photoToDisplay.addTag(person, location);
-                        String tagToDisplay = person + " " + location;
+                        String tagKey = tagTypeSpinner.getSelectedItem().toString();
+                        String tagValue = tagValueEditText.getText().toString();
+                        photoToDisplay.addTag(tagKey, tagValue);
+                        String tagToDisplay = tagKey + " " + tagValue;
 
                         tagsList.add(tagToDisplay);
                         ArrayAdapter<String> adapter = (ArrayAdapter<String>) tagListView.getAdapter();
