@@ -1,45 +1,31 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+Android Photo Library Project group 04 Soban Chaudhry and Mannan Mishra
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+Hello this is our photo library app for android. When you implement this code in your own project please allow android studio to build a gradle
+system for you so that this app can work on your laptop and your emulator.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+In the home page, you can create, delete, and rename albums in your photo library. To delete or rename apps, please first click on the desired
+album and press the corresponding button. To open an album, click the desired album from the list of albums and select the open album button.
+Albums contain photos and photos contain tags about persons or locations
 
----
+You can click search photos to take you to a new page that displays all the photos in the library, regardless of album, and u can search by
+selecting the tag type and inputting your tag value to find it. If you find what you are looking for, you can click the open photo button to
+dislay your search results
 
-## Edit a file
+If you click open album, you will be taken to a page which displays thumbnail images of the photos in your album. You can delete images by
+selecting the image you want to delete from the screen and pressing delete photo. You can add a photo to the album by clicking add photo.
+This will direct you to your phones photo library. From there you can select the photo you want to add and it will come up in the display as a 
+thumbnail image. If you are using an android emulator, you can add photos to your emulated device downloads folder by dragging images from your
+computer file system to the emulator. The go back button takes you back to the home page.
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+If you click your desired photo and select Display photo, you are taken to a page with your photo displayed with a list of tags on the right hand
+side of the photo. In this page, you can add a tag by pressing the add tag button. You can delete a tag by selecting the tag you want to delete
+from the list and then clicking delete tag. This will remove the tag from the photo. There are two types of tags, person tags and location tags.
+Select the tag type and enter the value of the tag. Later you can search for this photo using this tag type and value combo. The back button takes
+you back to the previous screen. The next and previous buttons take you to the next and previous photos in the album.
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+If you select move photo, you are taken to another screen where you can move the photo in the previous screen to another album.
+Select the album you want to move the image to that is not the album it was already in, otherwise you will get an alert. The image will be removed
+from the original album and placed into the selected album. The home button takes you back to the startup page with your list of albums. 
 
----
+We hope you enjoy exploring and going through our android app. 
 
-## Create a file
-
-Next, you’ll add a new file to this repository.
-
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
-
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
-
----
-
-## Clone a repository
-
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
-
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
-
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
