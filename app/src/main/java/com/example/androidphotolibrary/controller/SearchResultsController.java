@@ -43,11 +43,13 @@ public class SearchResultsController extends AppCompatActivity{
         imageGrid = findViewById(R.id.imageGrid);
         backButton = findViewById(R.id.backButton);
 
-        imageResultList = new ArrayList<>();
+
+
+        //imageResultList = new ArrayList<>();
         imageAdapter = new ImageAdapter(SearchResultsController.this, imageResultList);
         imageGrid.setAdapter(imageAdapter);
 
-        imageAdapter.notifyDataSetChanged();
+        //imageAdapter.notifyDataSetChanged();
 
         imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
