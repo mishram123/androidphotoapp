@@ -1,5 +1,3 @@
-Android Photo Library Project group 04 Soban Chaudhry and Mannan Mishra
-
 Hello this is our photo library app for android. When you implement this code in your own project please allow android studio to build a gradle
 system for you so that this app can work on your laptop and your emulator.
 
